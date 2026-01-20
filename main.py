@@ -63,24 +63,73 @@ def predict_face(test_image, mean_face, eigenfaces, train_weights, train_labels)
 if __name__ == "__main__":
     chemin_dataset = "./face_database"  
     
-    try:
-        images, labels, shape = load_image(chemin_dataset)        
-        num_test_images = 10
-        X_train = images[:-num_test_images]
-        y_train = labels[:-num_test_images]
+    # try:
+    #     images, labels, shape = load_image(chemin_dataset)        
+    #     num_test_images = 10
+    #     X_train = images[:-num_test_images]
+    #     y_train = labels[:-num_test_images]
         
-        X_test = images[-num_test_images:]
-        y_test = labels[-num_test_images:]
+    #     X_test = images[-num_test_images:]
+    #     y_test = labels[-num_test_images:]
         
-        print(f"Entraînement sur {len(X_train)} images. Test sur {len(X_test)} images.")
+    #     print(f"Entraînement sur {len(X_train)} images. Test sur {len(X_test)} images.")
 
-        # Entraînement (Calcul des Eigenfaces)
+    #     # Entraînement (Calcul des Eigenfaces)
+    #     mean_face, eigenfaces, X_centered = train_eigenfaces(X_train, n_components=50)
+
+    #     train_weights = get_weights(X_train, mean_face, eigenfaces)
+
+    #     plt.figure(figsize=(10, 4))
+    #     plt.subplot(1, 2, 1)
+    #     plt.imshow(mean_face.reshape(shape), cmap='gray')
+    #     plt.title("Le Visage Moyen")
+    #     plt.axis('off')
+        
+    #     plt.subplot(1, 2, 2)
+    #     plt.imshow(eigenfaces[:, 0].reshape(shape), cmap='gray') 
+    #     plt.title("Eigenface #1 (La plus importante)")
+    #     plt.axis('off')
+    #     plt.show(block=False) 
+    #     plt.pause(-1)
+    #     plt.close()
+        
+    #     print("\n--- DÉBUT DU TEST ---")
+    #     correct = 0
+    #     for i in range(len(X_test)):
+    #         label_predit, distance = predict_face(X_test[i], mean_face, eigenfaces, train_weights, y_train)
+    #         vrai_label = y_test[i]
+            
+    #         status = "OK" if label_predit == vrai_label else "ERREUR"
+    #         print(f"Image {i+1}: Vrai={vrai_label} | Predit={label_predit} (Dist={distance:.2f}) -> {status}")
+            
+    #         if label_predit == vrai_label:
+    #             correct += 1
+                
+    #     precision = (correct / len(X_test)) * 100
+    #     print(f"\nPRÉCISION TOTALE : {precision:.2f}%")
+
+    try: 
+        images , labels , shape = load_image ( chemin_dataset )
+        
+        #mixing images 
+        indices = np.arange(len(images))
+        np.random.shuffle(indices)
+        images = images[indices]
+        labels = labels[indices]
+        
+        num_test_image = 50
+        
+        X_train = images[:-num_test_image]
+        y_train = labels[:-num_test_image]
+        
+        X_test = images[-num_test_image:]
+        y_test = labels[-num_test_image:]
+        
+         # Entraînement (Calcul des Eigenfaces)
         mean_face, eigenfaces, X_centered = train_eigenfaces(X_train, n_components=50)
 
-        # Création des signatures (Projection des données connues)
         train_weights = get_weights(X_train, mean_face, eigenfaces)
 
-        # Visualisation (Visage Moyen et Eigenface)
         plt.figure(figsize=(10, 4))
         plt.subplot(1, 2, 1)
         plt.imshow(mean_face.reshape(shape), cmap='gray')
@@ -109,6 +158,7 @@ if __name__ == "__main__":
                 
         precision = (correct / len(X_test)) * 100
         print(f"\nPRÉCISION TOTALE : {precision:.2f}%")
+
 
     except Exception as e:
         print(f"Erreur critique : {e}")

@@ -6,6 +6,17 @@ import matplotlib.pyplot as plt
 from eigenface import train_eigenfaces 
 matplotlib.use('TkAgg')
 
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
+def plot_confusion_matrix(y_true, y_pred):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=False, cmap="Blues") # annot=True si peu de classes
+    plt.xlabel('Predit')
+    plt.ylabel('Vrai')
+    plt.title('Matrice de Confusion')
+    plt.show()
 
 
 def load_image(folder_path):

@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from eigenface import train_eigenfaces 
 matplotlib.use('TkAgg')
 
+
+
 def load_image(folder_path):
     images = []
     person = []
@@ -47,8 +49,6 @@ def get_weights(data, mean_face, eigenfaces):
 
 # ---  Prediction fonction ---
 def predict_face(test_image, mean_face, eigenfaces, train_weights, train_labels):
-    """Reconnaît une image inconnue"""
-    
     test_image_centered = test_image - mean_face
     test_weight = np.dot(test_image_centered.reshape(1, -1), eigenfaces)
     
@@ -66,11 +66,9 @@ def analyze_performance(X_train, y_train, X_test, y_test):
     
     for n in components_list:
         print(f"Test avec {n} composantes...")
-        # Entraînement
         mean, eigenfaces, _ = train_eigenfaces(X_train, n)
         train_weights = get_weights(X_train, mean, eigenfaces)
         
-        # Test
         correct = 0
         for i in range(len(X_test)):
             pred, _ = predict_face(X_test[i], mean, eigenfaces, train_weights, y_train)
@@ -80,7 +78,6 @@ def analyze_performance(X_train, y_train, X_test, y_test):
         acc = correct / len(X_test)
         accuracies.append(acc)
         
-    # Plot
     plt.plot(components_list, accuracies, marker='o')
     plt.xlabel("Nombre d'Eigenfaces")
     plt.ylabel("Précision")
@@ -89,12 +86,9 @@ def analyze_performance(X_train, y_train, X_test, y_test):
     plt.show()
     
 def reconstruct_image(image_originale, mean_face, eigenfaces):
-    # 1. Obtenir la signature (poids)
     image_centered = image_originale.flatten() - mean_face
     weights = np.dot(image_centered, eigenfaces)
     
-    # 2. Reconstruire (Inverse) : Poids * Eigenfaces + Moyenne
-    # (1, 50) x (50, 10304) -> (1, 10304)
     reconstruction = np.dot(weights, eigenfaces.T) + mean_face
     
     return reconstruction
@@ -102,73 +96,28 @@ def reconstruct_image(image_originale, mean_face, eigenfaces):
 if __name__ == "__main__":
     chemin_dataset = "./face_database"  
     
-    # try:
-    #     images, labels, shape = load_image(chemin_dataset)        
-    #     num_test_images = 10
-    #     X_train = images[:-num_test_images]
-    #     y_train = labels[:-num_test_images]
-        
-    #     X_test = images[-num_test_images:]
-    #     y_test = labels[-num_test_images:]
-        
-    #     print(f"Entraînement sur {len(X_train)} images. Test sur {len(X_test)} images.")
-
-    #     # Entraînement (Calcul des Eigenfaces)
-    #     mean_face, eigenfaces, X_centered = train_eigenfaces(X_train, n_components=50)
-
-    #     train_weights = get_weights(X_train, mean_face, eigenfaces)
-
-    #     plt.figure(figsize=(10, 4))
-    #     plt.subplot(1, 2, 1)
-    #     plt.imshow(mean_face.reshape(shape), cmap='gray')
-    #     plt.title("Le Visage Moyen")
-    #     plt.axis('off')
-        
-    #     plt.subplot(1, 2, 2)
-    #     plt.imshow(eigenfaces[:, 0].reshape(shape), cmap='gray') 
-    #     plt.title("Eigenface #1 (La plus importante)")
-    #     plt.axis('off')
-    #     plt.show(block=False) 
-    #     plt.pause(-1)
-    #     plt.close()
-        
-    #     print("\n--- DÉBUT DU TEST ---")
-    #     correct = 0
-    #     for i in range(len(X_test)):
-    #         label_predit, distance = predict_face(X_test[i], mean_face, eigenfaces, train_weights, y_train)
-    #         vrai_label = y_test[i]
-            
-    #         status = "OK" if label_predit == vrai_label else "ERREUR"
-    #         print(f"Image {i+1}: Vrai={vrai_label} | Predit={label_predit} (Dist={distance:.2f}) -> {status}")
-            
-    #         if label_predit == vrai_label:
-    #             correct += 1
-                
-    #     precision = (correct / len(X_test)) * 100
-    #     print(f"\nPRÉCISION TOTALE : {precision:.2f}%")
-
     try: 
-        images , labels , shape = load_image ( chemin_dataset )
+        images, labels, shape = load_image(chemin_dataset)
         
-        #mixing images 
+        np.random.seed(42) 
         indices = np.arange(len(images))
         np.random.shuffle(indices)
         images = images[indices]
         labels = labels[indices]
         
+        # 3. Séparation Train / Test
         num_test_image = 50
-        
         X_train = images[:-num_test_image]
         y_train = labels[:-num_test_image]
-        
         X_test = images[-num_test_image:]
         y_test = labels[-num_test_image:]
         
-         # Entraînement (Calcul des Eigenfaces)
+        # 4. Entraînement (Calcul des Eigenfaces)
+        print("--- Entraînement en cours ---")
         mean_face, eigenfaces, X_centered = train_eigenfaces(X_train, n_components=50)
-
         train_weights = get_weights(X_train, mean_face, eigenfaces)
 
+        # 5. Visualisation (Visage Moyen et Eigenface)
         plt.figure(figsize=(10, 4))
         plt.subplot(1, 2, 1)
         plt.imshow(mean_face.reshape(shape), cmap='gray')
@@ -177,28 +126,53 @@ if __name__ == "__main__":
         
         plt.subplot(1, 2, 2)
         plt.imshow(eigenfaces[:, 0].reshape(shape), cmap='gray') 
-        plt.title("Eigenface #1 (La plus importante)")
+        plt.title("Eigenface #1 (Ghost Face)")
         plt.axis('off')
         plt.show(block=False) 
-        plt.pause(-1)
+        plt.pause(2) # On attend 2 secondes puis on continue
         plt.close()
         
-        print("\n--- DÉBUT DU TEST ---")
+        # 6. Test de Reconnaissance Standard
+        print("\n--- DÉBUT DU TEST DE RECONNAISSANCE ---")
         correct = 0
         for i in range(len(X_test)):
             label_predit, distance = predict_face(X_test[i], mean_face, eigenfaces, train_weights, y_train)
             vrai_label = y_test[i]
             
-            status = "OK" if label_predit == vrai_label else "ERREUR"
-            print(f"Image {i+1}: Vrai={vrai_label} | Predit={label_predit} (Dist={distance:.2f}) -> {status}")
+            # Affichage allégé pour ne pas spammer la console
+            if i < 5: # On affiche juste les 5 premiers détails
+                status = "OK" if label_predit == vrai_label else "ERREUR"
+                print(f"Image {i+1}: Vrai={vrai_label} | Predit={label_predit} (Dist={distance:.2f}) -> {status}")
             
             if label_predit == vrai_label:
                 correct += 1
                 
         precision = (correct / len(X_test)) * 100
-        print(f"\nPRÉCISION TOTALE : {precision:.2f}%")
+        print(f"\n>>> PRÉCISION FINALE (50 composantes) : {precision:.2f}%")
 
-
+        # 7. PARTIE RECHERCHE : Courbe de performance
+        # C'est ici qu'on utilise la fonction que vous avez ajoutée !
+        print("\n--- ANALYSE DE PERFORMANCE (Courbe) ---")
+        print("Calcul en cours pour 5, 10, 20... composantes. Patientez.")
+        analyze_performance(X_train, y_train, X_test, y_test)
+        
+        # 8. PARTIE MATHÉMATIQUE : Reconstruction
+        # On montre comment le visage est reconstruit
+        print("\n--- DÉMONSTRATION DE RECONSTRUCTION ---")
+        image_test = X_test[0] # On prend la première image de test
+        reconstruction = reconstruct_image(image_test, mean_face, eigenfaces)
+        
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        plt.imshow(image_test.reshape(shape), cmap='gray')
+        plt.title(f"Originale ({y_test[0]})")
+        plt.axis('off')
+        
+        plt.subplot(1, 2, 2)
+        plt.imshow(reconstruction.reshape(shape), cmap='gray')
+        plt.title("Reconstruite avec 50 Eigenfaces")
+        plt.axis('off')
+        plt.show() 
     except Exception as e:
         print(f"Erreur critique : {e}")
         import traceback

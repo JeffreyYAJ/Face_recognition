@@ -8,6 +8,7 @@ matplotlib.use('TkAgg')
 
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
+from opencv import cv
 
 def plot_confusion_matrix(y_true, y_pred):
     cm = confusion_matrix(y_true, y_pred)

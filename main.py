@@ -8,7 +8,7 @@ matplotlib.use('TkAgg')
 
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
-from opencv import cv
+from camera_capture import run_face_recognition_camera
 
 def plot_confusion_matrix(y_true, y_pred):
     cm = confusion_matrix(y_true, y_pred)
@@ -105,7 +105,18 @@ def reconstruct_image(image_originale, mean_face, eigenfaces):
     
     return reconstruction
 
-if __name__ == "__main__":
+def main_menu():
+    """Menu principal pour choisir le mode d'exécution"""
+    print("\n" + "="*60)
+    print("  SYSTÈME DE RECONNAISSANCE FACIALE PAR EIGENFACES")
+    print("="*60)
+    print("\n1. Exécuter l'analyse complète (Test + Graphiques)")
+    print("2. Lancer la reconnaissance faciale en temps réel (Caméra)")
+    print("3. Quitter")
+    print("\n" + "="*60)
+
+def run_analysis():
+    """Exécute l'analyse complète avec graphiques"""
     chemin_dataset = "./face_database"  
     
     try: 
@@ -125,7 +136,7 @@ if __name__ == "__main__":
         y_test = labels[-num_test_image:]
         
         # 4. Entraînement (Calcul des Eigenfaces)
-        print("--- Entraînement en cours ---")
+        print("\n--- Entraînement en cours ---")
         mean_face, eigenfaces, X_centered = train_eigenfaces(X_train, n_components=50)
         train_weights = get_weights(X_train, mean_face, eigenfaces)
 
@@ -141,7 +152,7 @@ if __name__ == "__main__":
         plt.title("Eigenface #1 (Ghost Face)")
         plt.axis('off')
         plt.show(block=False) 
-        plt.pause(2) # On attend 2 secondes puis on continue
+        plt.pause(2)
         plt.close()
         
         # 6. Test de Reconnaissance Standard
@@ -151,8 +162,7 @@ if __name__ == "__main__":
             label_predit, distance = predict_face(X_test[i], mean_face, eigenfaces, train_weights, y_train)
             vrai_label = y_test[i]
             
-            # Affichage allégé pour ne pas spammer la console
-            if i < 5: # On affiche juste les 5 premiers détails
+            if i < 5:
                 status = "OK" if label_predit == vrai_label else "ERREUR"
                 print(f"Image {i+1}: Vrai={vrai_label} | Predit={label_predit} (Dist={distance:.2f}) -> {status}")
             
@@ -163,15 +173,13 @@ if __name__ == "__main__":
         print(f"\n>>> PRÉCISION FINALE (50 composantes) : {precision:.2f}%")
 
         # 7. PARTIE RECHERCHE : Courbe de performance
-        # C'est ici qu'on utilise la fonction que vous avez ajoutée !
         print("\n--- ANALYSE DE PERFORMANCE (Courbe) ---")
         print("Calcul en cours pour 5, 10, 20... composantes. Patientez.")
         analyze_performance(X_train, y_train, X_test, y_test)
         
         # 8. PARTIE MATHÉMATIQUE : Reconstruction
-        # On montre comment le visage est reconstruit
         print("\n--- DÉMONSTRATION DE RECONSTRUCTION ---")
-        image_test = X_test[0] # On prend la première image de test
+        image_test = X_test[0]
         reconstruction = reconstruct_image(image_test, mean_face, eigenfaces)
         
         plt.figure(figsize=(10, 5))
@@ -185,7 +193,29 @@ if __name__ == "__main__":
         plt.title("Reconstruite avec 50 Eigenfaces")
         plt.axis('off')
         plt.show() 
+        
     except Exception as e:
         print(f"Erreur critique : {e}")
         import traceback
         traceback.print_exc()
+
+if __name__ == "__main__":
+    while True:
+        main_menu()
+        choix = input("\nChoisissez une option (1, 2 ou 3): ").strip()
+        
+        if choix == "1":
+            print("\n🔄 Démarrage de l'analyse complète...")
+            run_analysis()
+        elif choix == "2":
+            print("\n📷 Démarrage de la reconnaissance faciale en temps réel...")
+            run_face_recognition_camera(
+                dataset_path="./face_database",
+                n_components=50,
+                threshold=5000
+            )
+        elif choix == "3":
+            print("✓ Au revoir!")
+            break
+        else:
+            print("❌ Option invalide. Veuillez entrer 1, 2 ou 3.")

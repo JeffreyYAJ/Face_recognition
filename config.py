@@ -1,8 +1,3 @@
-"""
-Configuration pour le système de reconnaissance faciale
-"""
-
-# Chemin vers la base de données
 DATABASE_PATH = "./face_database"
 
 # Paramètres du modèle Eigenfaces
@@ -34,4 +29,4 @@ BOX_COLOR_UNKNOWN = (0, 0, 255)  # Couleur pour visages inconnus (BGR)
 BOX_THICKNESS = 2  # Épaisseur du rectangle
 
 # Logging
-VERBOSE = True  # Mode verbose (affiche plus d'infos)
+VERBOSE = True  

@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-"""
-Exemples Avancés - Comment utiliser la reconnaissance faciale
-"""
-
+# Genere par IA
 from camera_capture import run_face_recognition_camera
 
 # ============================================================
@@ -221,10 +217,8 @@ def conseils_ajustement():
     print("="*80)
 
 if __name__ == "__main__":
-    # Afficher les conseils d'abord
+
     afficher_comparaison()
     conseils_ajustement()
-    
-    # Lancer le menu interactif
     while menu():
         pass

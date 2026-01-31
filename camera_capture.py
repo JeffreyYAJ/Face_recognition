@@ -64,29 +64,29 @@ def predict_face(test_image, mean_face, eigenfaces, train_weights, train_labels,
 def run_face_recognition_camera(dataset_path="./face_database", n_components=50, threshold=5000):
     """Lance la reconnaissance faciale en temps réel sur la caméra"""
     
-    print("🔄 Chargement de la base de données...")
+    print(" Chargement de la base de données...")
     try:
         images, labels, img_shape = load_image(dataset_path)
         print(f"✓ {len(images)} images chargées")
         print(f"✓ Dimensions des visages: {img_shape}")
     except Exception as e:
-        print(f"❌ Erreur lors du chargement: {e}")
+        print(f" Erreur lors du chargement: {e}")
         return
     
-    print(f"🔄 Entraînement des Eigenfaces (n_components={n_components})...")
+    print(f" Entraînement des Eigenfaces (n_components={n_components})...")
     try:
         mean_face, eigenfaces, _ = train_eigenfaces(images, n_components=n_components)
         train_weights = get_weights(images, mean_face, eigenfaces)
         print("✓ Modèle entraîné avec succès!")
     except Exception as e:
-        print(f"❌ Erreur lors de l'entraînement: {e}")
+        print(f" Erreur lors de l'entraînement: {e}")
         return
     
-    print("📷 Initialisation de la caméra...")
+    print(" Initialisation de la caméra...")
     cap = cv2.VideoCapture(0)
     
     if not cap.isOpened():
-        print("❌ Impossible d'ouvrir la caméra!")
+        print(" Impossible d'ouvrir la caméra!")
         return
     
     # Charger le classificateur en cascade pour la détection de visages
@@ -108,13 +108,13 @@ def run_face_recognition_camera(dataset_path="./face_database", n_components=50,
         ret, frame = cap.read()
         
         if not ret:
-            print("❌ Erreur lors de la lecture du flux vidéo")
+            print(" Erreur lors de la lecture du flux vidéo")
             break
         
         # Calculer les FPS
         frame_count += 1
         elapsed = time.time() - start_time
-        if elapsed > 0.5:  # Mettre à jour tous les 0.5 secondes
+        if elapsed > 0.5:  
             fps = frame_count / elapsed
             frame_count = 0
             start_time = time.time()
@@ -132,30 +132,29 @@ def run_face_recognition_camera(dataset_path="./face_database", n_components=50,
         frame_unknown_this = 0
         
         for (x, y, w, h) in faces:
-            # 1. Découper le visage
+            
             roi_gray = gray[y:y+h, x:x+w]
             
-            # 2. Redimensionner à la taille du dataset
             roi_resized = cv2.resize(roi_gray, (img_shape[1], img_shape[0]))
             
-            # 3. Prédire
+            # Prédire
             try:
                 label, dist = predict_face(roi_resized, mean_face, eigenfaces, 
                                          train_weights, labels, threshold=threshold)
                 
-                # 4. Déterminer la couleur en fonction du résultat
+                #  Déterminer la couleur en fonction du résultat
                 if label == "INCONNU":
-                    color = (0, 0, 255)  # Rouge pour inconnu
+                    color = (0, 0, 255)  
                     display_text = f"INCONNU (dist: {dist:.1f})"
                     frame_unknown_this += 1
                     unknown_count += 1
                 else:
-                    color = (0, 255, 0)  # Vert pour reconnu
+                    color = (0, 255, 0)  
                     display_text = f"{label} (dist: {dist:.1f})"
                     frame_recognized_this += 1
                     recognized_count += 1
                 
-                # 5. Dessiner le rectangle et le label
+                # Dessiner le rectangle et le label
                 cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
                 cv2.putText(frame, display_text, (x, y-10),
                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
@@ -191,19 +190,19 @@ def run_face_recognition_camera(dataset_path="./face_database", n_components=50,
     # Afficher les statistiques finales
     if recognized_count + unknown_count > 0:
         total = recognized_count + unknown_count
-        print(f"\n📊 Statistiques:")
+        print(f"\n Statistiques:")
         print(f"   Visages reconnus: {recognized_count}")
         print(f"   Visages inconnus: {unknown_count}")
         print(f"   Total: {total}")
         recognition_rate = (recognized_count / total) * 100
         print(f"   Taux de reconnaissance: {recognition_rate:.1f}%")
     
-    print("✓ Terminé!")
+    print(" Terminé!")
 
 if __name__ == "__main__":
     import os
     run_face_recognition_camera(
         dataset_path="./face_database",
         n_components=50,
-        threshold=5000  # Ajustez ce seuil selon vos besoins
+        threshold=5000  
     )

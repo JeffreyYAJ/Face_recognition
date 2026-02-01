@@ -13,7 +13,6 @@ if __name__ == "__main__":
     print("\nDémarrage de la caméra...")
     print("Appuyez sur 'q' pour quitter\n")
     
-    # Lancer la reconnaissance faciale avec les paramètres par défaut
     run_face_recognition_camera(
         dataset_path="./face_database",
         n_components=50,

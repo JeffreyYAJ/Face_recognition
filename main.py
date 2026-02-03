@@ -205,17 +205,17 @@ if __name__ == "__main__":
         choix = input("\nChoisissez une option (1, 2 ou 3): ").strip()
         
         if choix == "1":
-            print("\n🔄 Démarrage de l'analyse complète...")
+            print("\n Démarrage de l'analyse complète...")
             run_analysis()
         elif choix == "2":
-            print("\n📷 Démarrage de la reconnaissance faciale en temps réel...")
+            print("\n Démarrage de la reconnaissance faciale en temps réel...")
             run_face_recognition_camera(
                 dataset_path="./face_database",
                 n_components=50,
                 threshold=5000
             )
         elif choix == "3":
-            print("✓ Au revoir!")
+            print(" Au revoir!")
             break
         else:
-            print("❌ Option invalide. Veuillez entrer 1, 2 ou 3.")
+            print(" Option invalide. Veuillez entrer 1, 2 ou 3.")

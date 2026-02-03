@@ -1,17 +1,17 @@
-# 👤 Système de Reconnaissance Faciale
+# Système de Reconnaissance Faciale
 
 Un système complet de reconnaissance faciale en temps réel utilisant **Eigenfaces** et **OpenCV**, avec interface caméra interactive.
 
-## ✨ Fonctionnalités Principales
+## Fonctionnalités Principales
 
-- 🎥 **Reconnaissance en temps réel** sur caméra
-- 👨‍👩‍👧‍👦 **Détection et identification** de visages multiples
-- 📊 **Analyse statistique** avec graphiques
-- ⚙️ **Configuration flexible** et paramètres ajustables
-- 🚀 **Performance optimisée** (25-30 FPS)
-- 📈 **Taux de reconnaissance** 80-95%
+- **Reconnaissance en temps réel** sur caméra
+- **Détection et identification** de visages multiples
+- **Analyse statistique** avec graphiques
+- **Configuration flexible** et paramètres ajustables
+- **Performance optimisée** (25-30 FPS)
+- **Taux de reconnaissance** 80-95%
 
-## 📋 Table des Matières
+## Table des Matières
 
 - [Installation](#installation)
 - [Utilisation](#utilisation)
@@ -21,7 +21,7 @@ Un système complet de reconnaissance faciale en temps réel utilisant **Eigenfa
 - [Troubleshooting](#troubleshooting)
 - [Fichiers du Projet](#fichiers-du-projet)
 
-## 🔧 Installation
+##  Installation
 
 ### Prérequis
 
@@ -31,22 +31,17 @@ Un système complet de reconnaissance faciale en temps réel utilisant **Eigenfa
 
 ### Étapes
 
-1. **Cloner ou accéder au projet:**
-```bash
-cd /home/yaj/Desktop/Face_recognition
-```
-
-2. **Installer les dépendances:**
+1. **Installer les dépendances:**
 ```bash
 pip install opencv-python numpy scikit-learn matplotlib seaborn
 ```
 
-3. **Vérifier l'installation:**
+2. **Vérifier l'installation:**
 ```bash
 python test_setup.py
 ```
 
-## 🚀 Utilisation
+## Utilisation
 
 ### Option 1: Menu Interactif (Recommandé)
 
@@ -77,14 +72,14 @@ run_face_recognition_camera(
 )
 ```
 
-## 🎯 Contrôles Caméra
+## Contrôles Caméra
 
 | Touche | Action |
 |--------|--------|
 | **q** | Quitter et afficher statistiques |
 | **Autres** | Aucun effet |
 
-## 📊 Affichage à l'Écran
+## Affichage à l'Écran
 
 ```
 ┌─────────────────────────────────┐
@@ -103,14 +98,14 @@ run_face_recognition_camera(
 │  │ │ ██████████████████      │    │
 │  │ └─────────────────────────┘    │
 │                                    │
-│  📊 FPS: 28.5                     │
-│  👁️  Détectés: 2                  │
-│  ✅ Reconnus: 1                   │
-│  ❌ Inconnus: 1                   │
+│   FPS: 28.5                     │
+│   Détectés: 2                  │
+│   Reconnus: 1                   │
+│   Inconnus: 1                   │
 └─────────────────────────────────┘
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Face_recognition/
@@ -131,9 +126,7 @@ Face_recognition/
 │   │   └── ...
 │   └── ...
 │
-├── README.md                    # Ce fichier
-├── README_CAMERA.md             # Documentation technique
-├── UTILISATION.md               # Guide d'utilisation
+├── README.md                    
 └── RESUME.md                    # Résumé des modifications
 ```
 
@@ -203,7 +196,7 @@ face_database/
 - Différents angles et expressions
 - Bon éclairage
 
-## 📈 Performance
+## Performance
 
 ### Résultats Typiques
 
@@ -224,7 +217,7 @@ Pour améliorer les performances:
 3. **Réduire la résolution caméra**
 4. **Fermer d'autres applications**
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "Impossible d'ouvrir la caméra!"
 
@@ -237,40 +230,33 @@ ls /dev/video*
 sudo apt-get install cheese
 cheese
 
-# Vérifier les permissions
-sudo usermod -a -G video $USER
 ```
 
-### "ModuleNotFoundError: No module named 'sklearn'"
-
-```bash
-pip install scikit-learn seaborn
-```
 
 ### Reconnaissance imprécise
 
 **Actions à prendre:**
-1. ✅ Augmenter `n_components` à 100
-2. ✅ Réduire `threshold` à 3500
-3. ✅ Ajouter plus d'images au dataset
-4. ✅ Améliorer l'éclairage
-5. ✅ Vérifier la qualité des images
+1.  Augmenter `n_components` à 100
+2.  Réduire `threshold` à 3500
+3.  Ajouter plus d'images au dataset
+4.  Améliorer l'éclairage
+5.  Vérifier la qualité des images
 
 ### Trop de fausses reconnaissances
 
 **Solutions:**
-1. ✅ Réduire `n_components` à 30
-2. ✅ Augmenter `threshold` à 7000
-3. ✅ Vérifier la qualité des images de test
+1.  Réduire `n_components` à 30
+2.  Augmenter `threshold` à 7000
+3.  Vérifier la qualité des images de test
 
 ### FPS faible
 
 **Optimisations:**
-1. ✅ Réduire `n_components` (30 au lieu de 50)
-2. ✅ Fermer d'autres applications
-3. ✅ Vérifier l'utilisation CPU/RAM
+1.  Réduire `n_components` (30 au lieu de 50)
+2.  Fermer d'autres applications
+3.  Vérifier l'utilisation CPU/RAM
 
-## 📂 Fichiers du Projet
+## Fichiers du Projet
 
 ### Fichiers Principaux
 
@@ -282,34 +268,26 @@ pip install scikit-learn seaborn
 | `run_camera.py` | Lancement direct de la caméra |
 | `test_setup.py` | Test de l'installation |
 
-### Fichiers de Documentation
 
-| Fichier | Contenu |
-|---------|---------|
-| `README.md` | Vue d'ensemble (ce fichier) |
-| `README_CAMERA.md` | Documentation technique |
-| `UTILISATION.md` | Guide pratique d'utilisation |
-| `RESUME.md` | Résumé des modifications |
-
-## 🔬 Comment Fonctionne la Reconnaissance
+## Comment Fonctionne la Reconnaissance
 
 ### Étapes du Processus
 
-1. **Capture** 📷
+1. **Capture** 
    - Capture images depuis la caméra (30 FPS)
 
-2. **Détection** 👁️
+2. **Détection** 
    - Détecte les visages avec Haar Cascade Classifier
 
-3. **Prétraitement** ⚙️
+3. **Prétraitement** 
    - Redimensionne (200x200)
    - Normalise les valeurs
 
-4. **Reconnaissance** 🧠
+4. **Reconnaissance** 
    - Utilise le modèle Eigenfaces pré-entraîné
    - Calcule la distance euclidienne
 
-5. **Affichage** 📊
+5. **Affichage** 
    - Rectangle vert = reconnu
    - Rectangle rouge = inconnu
    - Affiche la distance de confiance
@@ -319,13 +297,13 @@ pip install scikit-learn seaborn
 **Principe:** Décompose les visages en "visages propres" (Eigenfaces)
 
 **Avantages:**
-- ✅ Rapide
-- ✅ Efficace en mémoire
-- ✅ Bon pour les petits datasets
+-  Rapide
+-  Efficace en mémoire
+-  Bon pour les petits datasets
 
 **Limitations:**
-- ❌ Sensible à l'éclairage
-- ❌ Moins précis que Deep Learning
+- Sensible à l'éclairage
+- Moins précis que Deep Learning
 
 ## 🎓 Ressources d'Apprentissage
 
@@ -337,7 +315,6 @@ pip install scikit-learn seaborn
 
 - [ ] Sauvegarde/chargement du modèle
 - [ ] Deep Learning (FaceNet, ArcFace)
-- [ ] Interface graphique (PyQt/Tkinter)
 - [ ] Base de données SQLite
 - [ ] Multi-threading
 - [ ] Support multi-caméras
@@ -348,19 +325,3 @@ pip install scikit-learn seaborn
 
 Ce projet est fourni à titre éducatif.
 
-## 🤝 Support
-
-Pour des questions ou problèmes:
-1. Consultez `UTILISATION.md`
-2. Vérifiez `README_CAMERA.md`
-3. Exécutez `test_setup.py`
-
-## 📬 Contact
-
-Développé sur Linux (2026) pour la reconnaissance faciale en temps réel.
-
----
-
-**Dernière mise à jour:** 31 janvier 2026  
-**Version:** 1.0  
-**Status:** ✅ Production Ready

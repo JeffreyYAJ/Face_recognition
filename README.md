@@ -1,66 +1,79 @@
-# Système de Reconnaissance Faciale
+## **Facial Recognition System**
 
-Un système complet de reconnaissance faciale en temps réel utilisant **Eigenfaces** et **OpenCV**, avec interface caméra interactive.
+A complete real-time facial recognition system based on Eigenfaces and OpenCV, featuring an interactive camera interface and statistical analysis tools.
 
-## Fonctionnalités Principales
+---
 
-- **Reconnaissance en temps réel** sur caméra
-- **Détection et identification** de visages multiples
-- **Analyse statistique** avec graphiques
-- **Configuration flexible** et paramètres ajustables
-- **Performance optimisée** (25-30 FPS)
-- **Taux de reconnaissance** 80-95%
+## **Key Features**
 
-## Table des Matières
+* Real-time camera-based facial recognition
+* Multiple face detection and identification
+* Statistical analysis with charts and metrics
+* Flexible configuration with adjustable parameters
+* Optimized performance (25–30 FPS)
+* Recognition accuracy between 80% and 95%
 
-- [Installation](#installation)
-- [Utilisation](#utilisation)
-- [Architecture](#architecture)
-- [Configuration](#configuration)
-- [Performance](#performance)
-- [Troubleshooting](#troubleshooting)
-- [Fichiers du Projet](#fichiers-du-projet)
+---
 
-##  Installation
+## **Table of Contents**
 
-### Prérequis
+* Installation
+* Usage
+* Architecture
+* Configuration
+* Performance
+* Troubleshooting
+* Project Files
 
-- Python 3.8+
-- Caméra web
-- 500 MB d'espace disque
+---
 
-### Étapes
+## **Installation**
 
-1. **Installer les dépendances:**
+### **Prerequisites**
+
+* Python 3.8 or higher
+* Webcam
+* 500 MB of free disk space
+
+### **Steps**
+
+Clone or access the project directory:
+
+Install dependencies:
+
 ```bash
 pip install opencv-python numpy scikit-learn matplotlib seaborn
 ```
 
-2. **Vérifier l'installation:**
+Verify installation:
+
 ```bash
 python test_setup.py
 ```
 
-## Utilisation
+---
 
-### Option 1: Menu Interactif (Recommandé)
+## **Usage**
+
+### **Option 1: Interactive Menu (Recommended)**
 
 ```bash
 python main.py
 ```
 
-**Choisissez une option:**
-- `1` - Analyse complète (graphiques + statistiques)
-- `2` - Reconnaissance caméra en temps réel
-- `3` - Quitter
+Available options:
 
-### Option 2: Lancer Directement la Caméra
+1. Full analysis (charts and statistics)
+2. Real-time camera recognition
+3. Exit
+
+### **Option 2: Direct Camera Launch**
 
 ```bash
 python run_camera.py
 ```
 
-### Option 3: Utilisation en Python
+### **Option 3: Python Integration**
 
 ```python
 from camera_capture import run_face_recognition_camera
@@ -72,256 +85,190 @@ run_face_recognition_camera(
 )
 ```
 
-## Contrôles Caméra
+---
 
-| Touche | Action |
-|--------|--------|
-| **q** | Quitter et afficher statistiques |
-| **Autres** | Aucun effet |
+## **Camera Controls**
 
-## Affichage à l'Écran
+| Key    | Action                      |
+| ------ | --------------------------- |
+| q      | Quit and display statistics |
+| Others | No effect                   |
 
-```
-┌─────────────────────────────────┐
-│  Flux Caméra                    │
-│  ┌─────────────────────────┐    │
-│  │ s1 (dist: 2500.5)       │    │ ← Rectangle VERT (reconnu)
-│  │ ██████████████████      │    │
-│  │ ██ VISAGE RECONNU ██    │    │
-│  │ ██████████████████      │    │
-│  │ └─────────────────────────┘    │
-│  │                                 │
-│  │ ┌─────────────────────────┐    │
-│  │ │ INCONNU (dist: 6500.2)  │    │ ← Rectangle ROUGE (inconnu)
-│  │ │ ██████████████████      │    │
-│  │ │ ██ VISAGE INCONNU ██    │    │
-│  │ │ ██████████████████      │    │
-│  │ └─────────────────────────┘    │
-│                                    │
-│   FPS: 28.5                     │
-│   Détectés: 2                  │
-│   Reconnus: 1                   │
-│   Inconnus: 1                   │
-└─────────────────────────────────┘
-```
+---
 
-## Architecture
+## **On-Screen Display**
+
+* Green rectangle: recognized face
+* Red rectangle: unknown face
+* Confidence distance displayed per face
+* FPS, number of detected, recognized, and unknown faces shown in real time
+
+---
+
+## **Architecture**
 
 ```
 Face_recognition/
 │
-├── main.py                      # Point d'entrée principal
-├── camera_capture.py            # Moteur de reconnaissance
-├── config.py                    # Configuration centralisée
-├── run_camera.py                # Lancement direct caméra
-├── test_setup.py                # Test d'installation
+├── main.py              # Main entry point
+├── camera_capture.py    # Recognition engine
+├── config.py            # Central configuration
+├── run_camera.py        # Direct camera execution
+├── test_setup.py        # Installation test
 │
-├── face_database/               # Base de données de visages
-│   ├── s1/                      # Personne 1
-│   │   ├── img1.jpg
-│   │   ├── img2.jpg
-│   │   └── ...
-│   ├── s2/                      # Personne 2
-│   │   ├── img1.jpg
-│   │   └── ...
+├── face_database/       # Face dataset
+│   ├── s1/
+│   ├── s2/
 │   └── ...
 │
-├── README.md                    
-└── RESUME.md                    # Résumé des modifications
+├── README.md
+├── README_CAMERA.md
+├── UTILISATION.md
+└── RESUME.md
 ```
 
-## ⚙️ Configuration
+---
 
-### Paramètres Principaux
+## **Configuration**
 
-**Localisation:** `camera_capture.py` → `run_face_recognition_camera()`
+### **Main Parameters**
+
+Location: `camera_capture.py → run_face_recognition_camera()`
 
 ```python
 run_face_recognition_camera(
-    dataset_path="./face_database",  # Chemin de la base de données
-    n_components=50,                 # Nombre d'Eigenfaces
-    threshold=5000                   # Seuil de reconnaissance
+    dataset_path="./face_database",
+    n_components=50,
+    threshold=5000
 )
 ```
 
-### Explication des Paramètres
+| Parameter    | Description                      |
+| ------------ | -------------------------------- |
+| dataset_path | Path to the face dataset         |
+| n_components | Number of Eigenfaces (20–100)    |
+| threshold    | Maximum distance for recognition |
 
-| Paramètre | Valeur | Description |
-|-----------|--------|-------------|
-| **dataset_path** | `"./face_database"` | Dossier contenant les visages |
-| **n_components** | `50` | Nombre d'Eigenfaces (20-100) |
-| **threshold** | `5000` | Distance max pour reconnaître |
+### **Recommended Settings**
 
-### Optimisation des Paramètres
+* **Higher accuracy (slower)**
+  `n_components=100`, `threshold=3500`
 
-**🎯 Pour une meilleure précision (plus lent):**
-```python
-n_components=100,    # Plus d'informations
-threshold=3500       # Plus strict
-```
+* **Higher speed (less accurate)**
+  `n_components=30`, `threshold=7000`
 
-**⚡ Pour plus de vitesse (moins précis):**
-```python
-n_components=30,     # Moins d'informations
-threshold=7000       # Plus permissif
-```
+* **Balanced (recommended)**
+  `n_components=50`, `threshold=5000`
 
-**⚖️ Équilibre optimal (recommandé):**
-```python
-n_components=50,     # Bon compromis
-threshold=5000       # Équilibré
-```
+---
 
-### Configuration du Dataset
+## **Dataset Configuration**
 
-**Structure requise:**
+Required structure:
+
 ```
 face_database/
-├── s1/              # Personne 1
-│   ├── 1.jpg
-│   ├── 2.jpg
-│   └── 3.jpg
-├── s2/              # Personne 2
-│   ├── 1.jpg
-│   └── 2.jpg
-└── s3/              # Personne 3
-    ├── 1.jpg
-    └── 2.jpg
+├── s1/
+├── s2/
+└── s3/
 ```
 
-**Recommandations:**
-- 8-12 photos par personne
-- Format: JPG, PNG
-- Résolution: 100x100 à 500x500 pixels
-- Différents angles et expressions
-- Bon éclairage
+Recommendations:
 
-## Performance
+* 8–12 images per person
+* JPG or PNG format
+* Resolution between 100×100 and 500×500
+* Multiple angles and expressions
+* Good lighting conditions
 
-### Résultats Typiques
+---
 
-| Métrique | Valeur |
-|----------|--------|
-| **Entraînement** | 2-3 secondes |
-| **Reconnaissance/image** | 10-50 ms |
-| **FPS en temps réel** | 25-30 |
-| **Précision** | 80-95% |
-| **Mémoire utilisée** | 200-400 MB |
+## **Performance**
 
-### Optimisation
+### **Typical Results**
 
-Pour améliorer les performances:
+| Metric                | Value       |
+| --------------------- | ----------- |
+| Training time         | 2–3 seconds |
+| Recognition per frame | 10–50 ms    |
+| Real-time FPS         | 25–30       |
+| Accuracy              | 80–95%      |
+| Memory usage          | 200–400 MB  |
 
-1. **Réduire n_components** (ex: 30 au lieu de 50)
-2. **Augmenter threshold** (ex: 7000 au lieu de 5000)
-3. **Réduire la résolution caméra**
-4. **Fermer d'autres applications**
+### **Optimization Tips**
 
-## Troubleshooting
+* Reduce `n_components`
+* Increase `threshold`
+* Lower camera resolution
+* Close background applications
 
-### "Impossible d'ouvrir la caméra!"
+---
 
-**Solutions:**
+## **Troubleshooting**
+
+### **Camera Not Opening**
+
 ```bash
-# Vérifier la caméra
 ls /dev/video*
-
-# Tester avec cheese
 sudo apt-get install cheese
 cheese
-
+sudo usermod -a -G video $USER
 ```
 
+### **Missing Modules**
 
-### Reconnaissance imprécise
+```bash
+pip install scikit-learn seaborn
+```
 
-**Actions à prendre:**
-1.  Augmenter `n_components` à 100
-2.  Réduire `threshold` à 3500
-3.  Ajouter plus d'images au dataset
-4.  Améliorer l'éclairage
-5.  Vérifier la qualité des images
+### **Low Accuracy**
 
-### Trop de fausses reconnaissances
+* Increase `n_components`
+* Decrease `threshold`
+* Add more training images
+* Improve lighting and image quality
 
-**Solutions:**
-1.  Réduire `n_components` à 30
-2.  Augmenter `threshold` à 7000
-3.  Vérifier la qualité des images de test
+### **Low FPS**
 
-### FPS faible
+* Reduce `n_components`
+* Close other applications
+* Monitor CPU and RAM usage
 
-**Optimisations:**
-1.  Réduire `n_components` (30 au lieu de 50)
-2.  Fermer d'autres applications
-3.  Vérifier l'utilisation CPU/RAM
+---
 
-## Fichiers du Projet
+## **How Facial Recognition Works**
 
-### Fichiers Principaux
+1. Camera image capture (up to 30 FPS)
+2. Face detection using Haar Cascade Classifier
+3. Image preprocessing (resize and normalization)
+4. Recognition using a pre-trained Eigenfaces model
+5. Euclidean distance computation
+6. Real-time visual feedback
 
-| Fichier | Description |
-|---------|-------------|
-| `main.py` | Menu interactif principal |
-| `camera_capture.py` | Moteur de reconnaissance faciale |
-| `config.py` | Configuration centralisée |
-| `run_camera.py` | Lancement direct de la caméra |
-| `test_setup.py` | Test de l'installation |
+### **Eigenfaces Algorithm**
 
+**Advantages**
 
-## Comment Fonctionne la Reconnaissance
+* Fast execution
+* Low memory usage
+* Suitable for small datasets
 
-### Étapes du Processus
+**Limitations**
 
-1. **Capture** 
-   - Capture images depuis la caméra (30 FPS)
+* Sensitive to lighting conditions
+* Less accurate than deep learning models
 
-2. **Détection** 
-   - Détecte les visages avec Haar Cascade Classifier
+---
 
-3. **Prétraitement** 
-   - Redimensionne (200x200)
-   - Normalise les valeurs
+## **Future Improvements**
 
-4. **Reconnaissance** 
-   - Utilise le modèle Eigenfaces pré-entraîné
-   - Calcule la distance euclidienne
+* Model saving and loading
+* Deep learning integration (FaceNet, ArcFace)
+* Graphical interface (PyQt or Tkinter)
+* SQLite database
+* Multi-threading
+* Multi-camera support
+* Video recording with annotations
+* Statistics export
 
-5. **Affichage** 
-   - Rectangle vert = reconnu
-   - Rectangle rouge = inconnu
-   - Affiche la distance de confiance
-
-### Algorithme Eigenfaces
-
-**Principe:** Décompose les visages en "visages propres" (Eigenfaces)
-
-**Avantages:**
--  Rapide
--  Efficace en mémoire
--  Bon pour les petits datasets
-
-**Limitations:**
-- Sensible à l'éclairage
-- Moins précis que Deep Learning
-
-## 🎓 Ressources d'Apprentissage
-
-- [OpenCV Face Recognition](https://docs.opencv.org/master/d7/d8b/tutorial_py_face_recognition_bases.html)
-- [Eigenfaces Paper](https://en.wikipedia.org/wiki/Eigenface)
-- [Scikit-learn PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html)
-
-## 🚀 Améliorations Futures
-
-- [ ] Sauvegarde/chargement du modèle
-- [ ] Deep Learning (FaceNet, ArcFace)
-- [ ] Base de données SQLite
-- [ ] Multi-threading
-- [ ] Support multi-caméras
-- [ ] Enregistrement vidéo avec annotations
-- [ ] Export des statistiques
-
-## 📝 Licence
-
-Ce projet est fourni à titre éducatif.
-
+---

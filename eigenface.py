@@ -32,23 +32,3 @@ def train_eigenfaces(X, n_components=50):
     
     return mean_face, eigenfaces, A
 
-# TEST
-# if __name__ == "__main__":
-    
-#     mean_face, eigenfaces, X_centered = train_eigenfaces(X, n_components=50)
-
-#     import matplotlib.pyplot as plt
-    
-#     plt.figure(figsize=(10, 4))
-#     plt.subplot(1, 2, 1)
-#     plt.imshow(mean_face.reshape(img_shape), cmap='gray')
-#     plt.title("Le Visage Moyen (Mean Face)")
-#     plt.axis('off')
-
-#     # Affichons la première Eigenface (la caractéristique la plus dominante)
-#     plt.subplot(1, 2, 2)
-#     plt.imshow(eigenfaces[:, 0].reshape(img_shape), cmap='gray')
-#     plt.title("Eigenface #1 (Ghost Face)")
-#     plt.axis('off')
-    
-#     plt.show()

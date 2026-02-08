@@ -17,7 +17,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        # Install project requirements so pylint can resolve imports.
+        # Use headless OpenCV in CI to avoid GUI/system dependencies.
+        if [ -f requirements.txt ]; then pip install -r requirements.txt || true; fi
+        pip install opencv-python-headless pylint
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
